@@ -276,3 +276,21 @@ asks for a similar Amazon-style app in a new location, treat this document as th
 default procedure: substitute new paths/URLs/names as given, skip questions already
 answered here (tech stack, doc set, auto-mode expectations) unless the user indicates
 they want something different this time, and follow sections 3–4.7 in order.
+
+## 7. Reusable Skills
+
+Each phase of this procedure is also captured as a standalone Claude Code Skill under
+`.claude/skills/` in this repo, invocable directly (e.g. `/scaffold-react-app`) instead
+of re-reading this whole document:
+
+| Skill | Covers |
+|---|---|
+| `check-dev-environment` | Section 3 — verify/install Node, Git, GitHub CLI |
+| `scaffold-react-app` | Sections 4.1–4.3 — scaffold app, structure, unit tests |
+| `add-playwright-e2e` | Section 4.4 (E2E part) — add Playwright browser tests |
+| `verify-app` | Section 4.4 — run tests, build, manual browser smoke test |
+| `publish-to-github` | Section 4.5 — git init/commit/push, GitHub auth handoff |
+| `publish-project-docs` | Section 4.6 — write/sync PRD, TDD, Test Plan, Test Cases, Test Run Report to repo + Drive |
+| `demo-failing-test` | Failure-demo workflow — real failing test, defect report, isolated from CI |
+
+Each `SKILL.md` links back to the concrete files in this repo as a worked example.
