@@ -4,6 +4,7 @@
 **Author:** Muzaffer
 **Date executed:** 2026-08-17
 **Environment:** Windows 11, Node.js v24.19.0, Vitest v4.1.10, Vite v8.2.1
+**Agent:** Claude agent running in Windows Terminal (Claude Code CLI)
 **Purpose:** Deliberately demonstrate the full failure-reporting workflow (failing test
 scenario → execution log → defect report → test run report) requested by the user,
 using a real, previously-undetected defect rather than a fabricated failure.

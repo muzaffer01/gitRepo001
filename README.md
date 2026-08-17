@@ -1,5 +1,9 @@
 # SampleShop
 
+> **Note:** This project was created using the **Claude agent running in Windows
+> Terminal** (Claude Code CLI on Windows) — the entire build, test, GitHub, and
+> documentation workflow was performed through that terminal-based agent session.
+
 A small Amazon-style e-commerce web app built with React + Vite. Includes three pages:
 
 - **Product List** (`/`) — browse all products, search by name, filter by category

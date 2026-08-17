@@ -4,6 +4,8 @@
 **Author:** Muzaffer
 **Date:** 2026-08-17
 **Status:** Draft — Phase 1
+**Note:** Created using the Claude agent running in Windows Terminal (Claude Code CLI
+on Windows 11).
 
 ---
 

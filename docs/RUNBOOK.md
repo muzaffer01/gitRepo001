@@ -5,6 +5,13 @@ procedure used to build the SampleShop project, so it can be recreated or repeat
 end-to-end in **auto mode** (no clarifying questions, no permission prompts) on request,
 without needing to re-derive scope from scratch.
 
+**Note:** This entire project — app, tests, GitHub integration, and documentation — was
+created using the **Claude agent running in Windows Terminal** (Claude Code CLI on
+Windows 11), not a browser-based or IDE-embedded agent. The environment-setup steps in
+section 3 (winget installs, PowerShell PATH-refresh quirk, etc.) are specific to that
+Windows Terminal context and should be re-evaluated if this runbook is ever executed
+from a different agent/OS environment.
+
 **Last updated:** 2026-08-17
 
 ---

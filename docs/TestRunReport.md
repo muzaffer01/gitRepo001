@@ -4,6 +4,7 @@
 **Author:** Muzaffer
 **Date executed:** 2026-08-17
 **Environment:** Windows 11, Node.js v24.19.0, Vitest v4.1.10, Vite v8.2.1
+**Agent:** Claude agent running in Windows Terminal (Claude Code CLI)
 **Repo:** `C:\Users\muzzu\Desktop\SampleAppDesktop001`
 
 ---

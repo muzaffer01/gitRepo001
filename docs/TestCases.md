@@ -4,6 +4,8 @@
 **Author:** Muzaffer
 **Date:** 2026-08-17
 **Related:** Test Plan
+**Note:** Created using the Claude agent running in Windows Terminal (Claude Code CLI
+on Windows 11).
 
 Automated cases are implemented in the corresponding `*.test.jsx` file and executed via
 `npm run test`. Manual cases are executed by hand against `npm run dev`.
