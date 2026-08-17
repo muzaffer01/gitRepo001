@@ -33,6 +33,8 @@ Build a web application like Amazon, with three pages for now:
 6. (Added later) Also commit those same documents into the Git repo (`docs/` folder)
 7. (Added later) Maintain this runbook itself in both Google Drive and the Git repo,
    kept up to date, for future auto-mode recreation
+8. (Added later) Add Playwright for automated end-to-end browser testing, alongside the
+   existing Vitest/RTL unit tests
 
 **Target locations (fixed by the user for this project):**
 - Local repo: `C:\Users\muzzu\Desktop\SampleAppDesktop001`
@@ -75,6 +77,12 @@ equivalent values, then substitute throughout.
 - **Verify manually, not just automated tests.** For UI work, actually run the dev
   server and click through the app with browser automation before calling it done —
   this user cares about real verification, not just green test output.
+- **Author fields must say "Muzaffer", never "Claude."** Any document with an
+  Author/Found-by field should credit the user by name from the first draft.
+- **Proactively install missing tools and drive requests to full completion.** Don't
+  stop at "here's what's missing" — install it, then carry the task through build,
+  test, local storage, GitHub, and documentation without waiting for step-by-step
+  permission once auto mode is in effect. Confirmed by the user as the right approach.
 
 ## 3. Prerequisites / Environment Setup
 
@@ -206,7 +214,7 @@ screenshot of the repo page.
 
 ### 4.6 Write and publish documentation
 
-Produce these five documents (adapt names/content to the actual project):
+Produce these documents (adapt names/content to the actual project):
 1. **Product Requirements Document (PRD)** — overview, goals, non-goals, user stories,
    functional/non-functional requirements, success metrics, open questions
 2. **Technical Design Document (TDD)** — architecture, tech stack + rationale, project
@@ -214,16 +222,20 @@ Produce these five documents (adapt names/content to the actual project):
    strategy, build/deploy, known limitations
 3. **Test Plan** — objective, scope (in/out), test levels & approach, environment, entry
    / exit criteria, deliverables, risks, schedule
-4. **Test Cases** — one table per page/area, automated cases mapped to their `*.test.jsx`
-   file, plus manual/exploratory cases for what automation doesn't practically cover
-5. **Test Run Report** — actual results: automated suite output, build output, manual
-   smoke test results (including anything **not verified**, with an honest note why),
-   defects found (or none), coverage gaps/follow-ups, conclusion
+4. **Test Cases** — one table per page/area, automated cases mapped to their test files
+   (unit/component AND end-to-end), plus manual/exploratory cases for what automation
+   doesn't practically cover
+5. **Test Run Report** — actual results: automated suite output (both unit and E2E),
+   build output, manual smoke test results (including anything **not verified**, with
+   an honest note why), defects found (or none), coverage gaps/follow-ups, conclusion
+6. **Defect reports** (as needed) — when a real bug is found (e.g. via a deliberate
+   failure-demonstration exercise), document status, severity, repro steps, root cause,
+   impact, suggested fix, and evidence (linked failing test + captured log)
+
+All documents' "Author" (or "Found by") field must say **Muzaffer**, never "Claude."
 
 **Store in two places, kept in sync:**
-- `docs/` folder inside the git repo (committed and pushed) — plain Markdown, filenames
-  `PRD.md`, `TDD.md`, `TestPlan.md`, `TestCases.md`, `TestRunReport.md`, `RUNBOOK.md`
-  (this file)
+- `docs/` folder inside the git repo (committed and pushed) — plain Markdown
 - The Google Drive project folder — as native Google Docs, one file per document, via
   `mcp__claude_ai_Google_Drive__create_file` with `contentMimeType: 'text/plain'` and
   `parentId` set to the Drive folder ID. Title convention: `<AppName> - <Document Name>`
@@ -231,8 +243,13 @@ Produce these five documents (adapt names/content to the actual project):
 - Before creating a Drive doc, `search_files` the target folder for an existing file
   with that title. If found, there is no direct "replace content" tool available in this
   toolset — recreate by creating the new version and using `trash_file` on the stale
-  one (confirm with the user before trashing anything they might still want), or ask the
-  user how they'd like the update handled.
+  one (trash is recoverable, not permanent deletion), then create the replacement.
+  Do this for EVERY doc whose source content changed, every time source docs are
+  updated (e.g. after adding Playwright, after a defect report changed a report's
+  content) — don't let Drive drift out of sync with the repo. **Also always update the
+  same-named local file first** — write enriched content to the local `docs/*.md` file
+  before or alongside writing it to Drive, never only to Drive, so the two never
+  diverge (this was missed once during this project and had to be caught and fixed).
 
 ### 4.7 Report back
 Summarize what was built, where it lives (local path, GitHub URL, Drive folder), test
