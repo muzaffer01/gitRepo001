@@ -1,7 +1,7 @@
 # Test Cases
 ## SampleShop — Phase 1
 
-**Author:** Claude (on behalf of Muzaffer)
+**Author:** Muzaffer
 **Date:** 2026-08-17
 **Related:** Test Plan
 

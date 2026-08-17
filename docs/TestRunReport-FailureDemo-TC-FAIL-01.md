@@ -1,7 +1,7 @@
 # Test Run Report — Failure Demo (TC-FAIL-01)
 ## SampleShop
 
-**Author:** Claude (on behalf of Muzaffer)
+**Author:** Muzaffer
 **Date executed:** 2026-08-17
 **Environment:** Windows 11, Node.js v24.19.0, Vitest v4.1.10, Vite v8.2.1
 **Purpose:** Deliberately demonstrate the full failure-reporting workflow (failing test

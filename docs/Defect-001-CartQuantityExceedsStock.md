@@ -6,8 +6,7 @@
 **Severity:** Medium
 **Priority:** Medium
 **Found:** 2026-08-17, via demo test scenario TC-FAIL-01
-**Found by:** Claude (on behalf of Muzaffer), while authoring a deliberate
-failure-workflow demonstration
+**Found by:** Muzaffer, while authoring a deliberate failure-workflow demonstration
 **Related:** [[Test Cases]] TC-FAIL-01, [[Test Run Report — Failure Demo (TC-FAIL-01)]]
 
 ---

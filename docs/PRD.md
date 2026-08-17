@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 ## SampleShop — Phase 1 (Product List, Product Details, Cart)
 
-**Author:** Claude (on behalf of Muzaffer)
+**Author:** Muzaffer
 **Date:** 2026-08-17
 **Status:** Draft — Phase 1
 
