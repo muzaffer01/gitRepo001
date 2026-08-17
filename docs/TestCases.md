@@ -57,8 +57,21 @@ Automated cases are implemented in the corresponding `*.test.jsx` file and execu
 | TC-M05 | Production build | Run `npm run build` | Build completes with 0 errors and emits `dist/index.html` + bundled assets | Manual | Build verification |
 | TC-M06 | Responsive layout | Resize browser to ~360px width on all 3 pages | Layout reflows to a single column without horizontal overflow | Manual | Exploratory |
 
+## Known-Failing / Defect-Tracking Cases
+
+These cases document a real, currently-unfixed defect (see
+[Defect-001](Defect-001-CartQuantityExceedsStock.md)). They are intentionally excluded
+from the main `npm run test` run so CI stays green — see `vite.demo.config.js` and
+[Test Run Report — Failure Demo](TestRunReport-FailureDemo-TC-FAIL-01.md) for the
+captured failing run.
+
+| ID | Title | Steps | Expected Result | Actual Result | Type | Source |
+|----|-------|-------|------------------|----------------|------|--------|
+| TC-FAIL-01 | Cart quantity selector respects item stock | Seed cart with a low-stock item (e.g. stock: 3), open `/cart`, inspect the quantity dropdown's options | Dropdown offers at most `min(stock, 10)` options (3, in this case) | **FAIL** — dropdown always offers exactly 10 options (1–10) regardless of stock | Automated (demo) | `demo/Cart.stockLimit.test.jsx` |
+
 ---
 
-**Totals:** 16 automated cases (all mapped to committed test files), 6 manual/exploratory
-cases for coverage not practical to automate in Phase 1 (visual layout, reload
-persistence, build output).
+**Totals:** 16 automated cases passing (all mapped to committed test files), 6 manual/
+exploratory cases for coverage not practical to automate in Phase 1 (visual layout,
+reload persistence, build output), 1 known-failing case tracking an open defect
+(DEF-001).
