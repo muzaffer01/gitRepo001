@@ -1,0 +1,33 @@
+﻿
+ RUN  v4.1.10 C:/Users/muzzu/Desktop/SampleAppDesktop001
+
+ ❯ demo/Cart.stockLimit.test.jsx (1 test | 1 failed) 48ms
+     × does not offer a quantity greater than the item stock 46ms
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  demo/Cart.stockLimit.test.jsx > TC-FAIL-01: Cart quantity selector respects product stock > does not offer a 
+quantity greater than the item stock
+AssertionError: expected 10 to be less than or equal to 3
+ ❯ demo/Cart.stockLimit.test.jsx:49:32
+     47|     // `Array.from({ length: 10 }, ...)`, ignoring stock entirely — so
+     48|     // maxOfferedQuantity is 10, not 3, and this assertion fails.
+     49|     expect(maxOfferedQuantity).toBeLessThanOrEqual(lowStockProduct.sto…
+       |                                ^
+     50|   })
+     51| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  14:45:20
+   Duration  1.34s (transform 68ms, setup 151ms, import 110ms, tests 48ms, environment 844ms)
+

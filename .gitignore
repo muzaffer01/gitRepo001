@@ -7,6 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Keep committed test-run logs (see docs/TestRunReport-FailureDemo-TC-FAIL-01.md)
+!logs/
+!logs/*.log
+
 node_modules
 dist
 dist-ssr
