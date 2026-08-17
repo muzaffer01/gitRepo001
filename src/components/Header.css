@@ -1,0 +1,48 @@
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #131921;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+}
+
+.site-header__logo {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.site-header__link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.site-header__link:hover {
+  color: #febd69;
+}
+
+.site-header__cart {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.site-header__cart-count {
+  background-color: #febd69;
+  color: #131921;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  min-width: 1.4rem;
+  text-align: center;
+}

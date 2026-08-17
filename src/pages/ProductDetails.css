@@ -1,0 +1,115 @@
+.product-details-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.product-details-page__back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #007185;
+  text-decoration: none;
+}
+
+.product-details-page__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.product-details-page__image {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.product-details-page__name {
+  font-size: 1.6rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.product-details-page__rating {
+  color: #ffa41c;
+  margin: 0 0 0.75rem 0;
+}
+
+.product-details-page__review-count {
+  color: #007185;
+  margin-left: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.product-details-page__price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.product-details-page__description {
+  color: #0f1111;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.product-details-page__stock {
+  color: #007600;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.product-details-page__purchase-box {
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 320px;
+}
+
+.product-details-page__quantity-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.product-details-page__quantity {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #d5d9d9;
+}
+
+.product-details-page__add-to-cart,
+.product-details-page__buy-now {
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #a88734;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.product-details-page__add-to-cart {
+  background-color: #ffd814;
+}
+
+.product-details-page__buy-now {
+  background-color: #ffa41c;
+}
+
+.product-details-page__add-to-cart:disabled,
+.product-details-page__buy-now:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.product-details-page__confirmation {
+  color: #007600;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .product-details-page__content {
+    grid-template-columns: 1fr;
+  }
+}
