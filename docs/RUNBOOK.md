@@ -339,3 +339,7 @@ of re-reading this whole document:
 | `demo-failing-test` | Failure-demo workflow — real failing test, defect report, isolated from CI |
 
 Each `SKILL.md` links back to the concrete files in this repo as a worked example.
+A visual flow diagram of how these 8 skills connect (dependencies, what each one
+produces, and the `demo-failing-test` bypass path) lives at `docs/SkillsFlow.md`
+(renders natively on GitHub via Mermaid) and as an interactive Artifact linked from
+that file.
