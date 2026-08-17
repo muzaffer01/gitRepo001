@@ -12,8 +12,10 @@
 
 | Metric | Result |
 |--------|--------|
-| Automated test files | 4 / 4 passed |
-| Automated test cases | 16 / 16 passed |
+| Automated unit/component test files | 4 / 4 passed |
+| Automated unit/component test cases | 16 / 16 passed |
+| Automated end-to-end test files | 3 / 3 passed |
+| Automated end-to-end test cases | 15 / 15 passed |
 | Production build | Passed (0 errors) |
 | Manual smoke test | Passed (see below) |
 | Overall result | **PASS** |
@@ -37,6 +39,26 @@
 | `src/components/Header.test.jsx` | TC-15 – TC-16 (2) | PASS |
 
 No failures, no skipped tests.
+
+## 2b. End-to-End Test Results (`npm run test:e2e`)
+
+```
+Running 15 tests using 4 workers
+
+  ok  1-15  ... (all 15 specs)
+
+  15 passed (8.3s)
+```
+
+| Test file | Cases | Result |
+|-----------|-------|--------|
+| `e2e/product-list.spec.js` | TC-E2E-01 – TC-E2E-05 (5) | PASS |
+| `e2e/product-details.spec.js` | TC-E2E-06 – TC-E2E-10 (5) | PASS |
+| `e2e/cart.spec.js` | TC-E2E-11 – TC-E2E-15 (5) | PASS |
+
+Run against a real Chromium browser (Playwright-managed) driving a real `npm run dev`
+server on `http://localhost:5173`. Full raw output:
+`logs/test-run-e2e-playwright-2026-08-17.log`.
 
 ## 3. Build Verification (`npm run build`)
 
@@ -68,18 +90,29 @@ Executed against `npm run dev` (`http://localhost:5173`) using live browser inte
 
 ## 5. Defects Found
 
-None. No functional defects were identified during automated or manual testing.
+None identified in this Phase 1 sign-off run. (A separate defect, DEF-001, was later
+found via a dedicated failure-demonstration exercise — see
+`docs/TestRunReport-FailureDemo-TC-FAIL-01.md` and
+`docs/Defect-001-CartQuantityExceedsStock.md` for details. It does not affect this
+report's PASS result since it concerns a scenario outside this run's scope.)
 
 ## 6. Coverage Gaps / Follow-ups
 
 - TC-M06 (responsive layout) should be re-verified manually with a real resized browser or device emulator.
 - TC-M02 (out-of-stock UI state) should be exercised once a real product can have zero stock (e.g. after cart/inventory logic exists, or by temporarily editing mock data).
 - No automated visual regression / accessibility testing is in place yet (out of scope for Phase 1 per Test Plan).
+- DEF-001 (cart quantity selector doesn't respect stock) tracked separately — see linked defect report.
+- **Update (Playwright added):** navigation (TC-M04) and reload persistence (TC-M03)
+  are now also covered by automated E2E cases (TC-E2E-15 and TC-E2E-14 respectively —
+  see section 2b and `docs/TestCases.md`), so those two no longer rely solely on manual
+  verification going forward, even though the manual pass in section 4 remains accurate
+  for the date of this run.
 
 ## 7. Conclusion
 
-All in-scope automated test cases (16/16) pass, the production build is clean, and the
-core user flows (browse, view details, add to cart, buy now, update/remove cart items,
-persistence) were confirmed working via live manual testing. The application meets the
-Phase 1 exit criteria defined in the Test Plan, with two follow-up items noted above for
-future verification.
+All in-scope automated test cases pass — 16/16 unit/component and 15/15 end-to-end —
+the production build is clean, and the core user flows (browse, view details, add to
+cart, buy now, update/remove cart items, persistence) were confirmed working via both
+automated E2E tests and live manual testing. The application meets the Phase 1 exit
+criteria defined in the Test Plan, with the follow-up items noted above for future
+verification.

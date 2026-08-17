@@ -31,7 +31,8 @@ Browser
 | State | React Context API | Cart state is small and global; no need for Redux/Zustand at this scale |
 | Persistence | Browser localStorage | Simplest option that survives page reloads without a backend |
 | Styling | Plain CSS per component | No CSS framework dependency; keeps bundle small |
-| Testing | Vitest + React Testing Library | Fast, Vite-native test runner; RTL encourages testing user-visible behavior |
+| Testing (unit/component) | Vitest + React Testing Library | Fast, Vite-native test runner; RTL encourages testing user-visible behavior |
+| Testing (end-to-end) | Playwright | Runs the app in a real browser (Chromium) via a real dev server, catching integration/routing/rendering issues unit tests can't |
 
 ## 3. Project Structure
 
@@ -53,6 +54,11 @@ src/
     testUtils.jsx             renderWithProviders() helper (Router + CartProvider)
   App.jsx                    Route definitions
   main.jsx                   App entry point, provider wiring
+e2e/
+  product-list.spec.js       Playwright: catalog, search, category filter
+  product-details.spec.js    Playwright: details view, add-to-cart, buy-now
+  cart.spec.js               Playwright: quantity/remove, subtotal, persistence, full journey
+playwright.config.js         Playwright config — auto-starts `npm run dev` as the test target
 ```
 
 ## 4. Data Model
@@ -120,12 +126,21 @@ a `useEffect` on every change, so it survives page reloads within the same brows
 
 ## 8. Testing Strategy
 
-- Component tests with Vitest + React Testing Library, run via `npm run test`.
-- Pages are tested through `MemoryRouter` (+ `Routes` where param/navigation behavior is
-  under test) and a real `CartProvider`, so behavior is verified end-to-end at the
-  component level rather than mocking context.
-- `localStorage` is cleared between tests and seeded directly where a pre-populated cart
-  is needed, avoiding brittle multi-step UI setup.
+Two automated layers, both required to pass before a change is considered done:
+
+- **Unit/component (Vitest + React Testing Library, `npm run test`)** — pages tested
+  through `MemoryRouter` (+ `Routes` where param/navigation behavior is under test) and
+  a real `CartProvider`, so behavior is verified at the component level without mocking
+  context. `localStorage` is cleared between tests and seeded directly where a
+  pre-populated cart is needed, avoiding brittle multi-step UI setup. Fast (~2s for the
+  whole suite) — the default feedback loop while developing.
+- **End-to-end (Playwright, `npm run test:e2e`)** — runs the real built app in a real
+  Chromium browser against a real (Playwright-managed) `npm run dev` server, covering
+  the same core flows from the outside: catalog browsing/search/filter, product details
+  → add to cart / buy now, cart quantity/remove/subtotal, empty states, reload
+  persistence, and full multi-page journeys via header navigation. Catches
+  integration/routing/rendering issues that jsdom-based unit tests can't (e.g. actual
+  browser navigation, real CSS layout, real localStorage).
 - See the companion **Test Plan** and **Test Cases** documents for full coverage details.
 
 ## 9. Build & Deployment

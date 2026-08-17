@@ -57,6 +57,30 @@ Automated cases are implemented in the corresponding `*.test.jsx` file and execu
 | TC-M05 | Production build | Run `npm run build` | Build completes with 0 errors and emits `dist/index.html` + bundled assets | Manual | Build verification |
 | TC-M06 | Responsive layout | Resize browser to ~360px width on all 3 pages | Layout reflows to a single column without horizontal overflow | Manual | Exploratory |
 
+## End-to-End Cases (Playwright, real browser)
+
+Run via `npm run test:e2e`. These exercise the same core flows as the manual cases
+above (TC-M01–TC-M04), but automated against a real Chromium browser and a real dev
+server, so they replace the need to re-run those manual cases by hand each time.
+
+| ID | Title | Steps | Expected Result | Type | Source |
+|----|-------|-------|------------------|------|--------|
+| TC-E2E-01 | Shows the full product catalog | Load `/` in a real browser | All 8 products visible; 8 product cards present | Automated (E2E) | `e2e/product-list.spec.js` |
+| TC-E2E-02 | Filters products by search text | Type "Yoga Mat" into search | Only the Yoga Mat is visible | Automated (E2E) | `e2e/product-list.spec.js` |
+| TC-E2E-03 | Filters products by category | Select "Books" | Only Books-category products visible | Automated (E2E) | `e2e/product-list.spec.js` |
+| TC-E2E-04 | Empty search state | Search a nonsense term | "No products found." shown | Automated (E2E) | `e2e/product-list.spec.js` |
+| TC-E2E-05 | Cart badge starts at 0 | Load `/` fresh | Header cart badge reads "0" | Automated (E2E) | `e2e/product-list.spec.js` |
+| TC-E2E-06 | Navigating from list shows full details | Click a product card | URL is `/products/1`; name, price, stock shown | Automated (E2E) | `e2e/product-details.spec.js` |
+| TC-E2E-07 | Not-found message for unknown id | Visit `/products/99999` | "Product not found." shown | Automated (E2E) | `e2e/product-details.spec.js` |
+| TC-E2E-08 | Add to cart shows confirmation + badge update | Click "Add to Cart" | "Added to cart!" shown; badge reads "1" | Automated (E2E) | `e2e/product-details.spec.js` |
+| TC-E2E-09 | Buy Now navigates to cart | Click "Buy Now" | URL is `/cart`; item visible | Automated (E2E) | `e2e/product-details.spec.js` |
+| TC-E2E-10 | Quantity respected on Buy Now | Select qty 3, click "Buy Now" | Cart line total is unit price × 3 | Automated (E2E) | `e2e/product-details.spec.js` |
+| TC-E2E-11 | Empty cart message | Visit `/cart` with no items | "Your cart is empty" + "Continue shopping" link shown | Automated (E2E) | `e2e/cart.spec.js` |
+| TC-E2E-12 | Quantity update recalculates totals | Change qty selector to 2 | Line total and subtotal both update | Automated (E2E) | `e2e/cart.spec.js` |
+| TC-E2E-13 | Remove item empties cart | Click "Remove" on the only item | Empty-cart state shown; badge reads "0" | Automated (E2E) | `e2e/cart.spec.js` |
+| TC-E2E-14 | Cart persists across reload | Add item, reload page | Item and subtotal still shown after reload | Automated (E2E) | `e2e/cart.spec.js` |
+| TC-E2E-15 | Full journey via header nav | Browse → details → add to cart → click header cart link | Lands on `/cart` with the correct item shown | Automated (E2E) | `e2e/cart.spec.js` |
+
 ## Known-Failing / Defect-Tracking Cases
 
 These cases document a real, currently-unfixed defect (see
@@ -71,7 +95,8 @@ captured failing run.
 
 ---
 
-**Totals:** 16 automated cases passing (all mapped to committed test files), 6 manual/
-exploratory cases for coverage not practical to automate in Phase 1 (visual layout,
-reload persistence, build output), 1 known-failing case tracking an open defect
-(DEF-001).
+**Totals:** 16 automated unit/component cases + 15 automated end-to-end cases, all
+passing (all mapped to committed test files), 6 manual/exploratory cases for coverage
+not practical to automate in Phase 1 (primarily visual layout at this point, since E2E
+now covers reload persistence and navigation), 1 known-failing case tracking an open
+defect (DEF-001).

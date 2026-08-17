@@ -53,10 +53,13 @@ equivalent values, then substitute throughout.
   user named. Don't wander into other folders/files even in "auto mode."
 - **Tech stack decided once, reusable as default:** React + Vite, react-router-dom for
   routing, React Context + localStorage for cart-like state, Vitest + React Testing
-  Library for tests, mock local JSON/JS data (no backend) — chosen via
-  `AskUserQuestion` at the start of this project. Offer these as the recommended default
-  again for similar "build a small e-commerce-style app" requests, but still ask once
-  per new project unless the user says to skip asking.
+  Library for unit/component tests, Playwright for end-to-end tests, mock local
+  JSON/JS data (no backend) — the core stack was chosen via `AskUserQuestion` at the
+  start of this project; Playwright was added later when the user asked "was Playwright
+  used for testing?" and then explicitly requested it be added for E2E coverage. Offer
+  this full stack as the recommended default again for similar "build a small
+  e-commerce-style app" requests, but still ask once per new project unless the user
+  says to skip asking.
 - **Interactive logins cannot be automated end-to-end.** GitHub OAuth device-flow
   authorization pages actively reject automated/scripted clicks (`access_denied`) —
   don't keep retrying browser automation on that final "Authorize" click after ~1 failed
@@ -145,6 +148,21 @@ persistence) before considering the build "tested." Note any manual case that co
 be verified (e.g. viewport resize not visually confirmed in automation) honestly in the
 Test Run Report rather than claiming it passed.
 
+**End-to-end tests (Playwright)** — add this alongside the unit/component suite by
+default going forward (it closes the gap that manual-only browser verification leaves):
+```powershell
+npm install -D @playwright/test
+npx playwright install chromium
+```
+Add `playwright.config.js` with a `webServer` block that runs `npm run dev` and waits on
+`http://localhost:5173`, and an `e2e/` folder with one `*.spec.js` per page/flow, mirroring
+the unit test files but driving a real browser (`page.goto`, `page.getByRole`, etc.).
+Add `"test:e2e": "playwright test"` and `"test:e2e:ui": "playwright test --ui"` to
+`package.json` scripts. `.gitignore` needs `/test-results/`, `/playwright-report/`,
+`/blob-report/`, `/playwright/.cache/`. Run `npm run test:e2e` and capture the output the
+same way as the unit suite; add an E2E section to the Test Run Report and an
+"End-to-End Cases" table to Test Cases.
+
 ### 4.5 Git init, commit, push
 ```powershell
 Set-Location "<local-repo-path>"
@@ -224,7 +242,7 @@ for detail.
 | GitHub account | muzaffer01 |
 | Drive folder | "Sample001 Project" — `108gl4b5UcMhemqvyYJ9eH_NRdKhSBFfs` |
 | Dev server | `npm run dev` → http://localhost:5173/ |
-| Tech stack | React 19 + Vite, react-router-dom v7, Context + localStorage, Vitest + RTL |
+| Tech stack | React 19 + Vite, react-router-dom v7, Context + localStorage, Vitest + RTL (unit), Playwright (E2E) |
 | Pages | `/` (Product List), `/products/:id` (Product Details), `/cart` (Cart) |
 
 ## 6. Re-run Trigger

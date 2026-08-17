@@ -34,6 +34,7 @@ persistence) works correctly.
 | Level | Approach | Tooling |
 |-------|----------|---------|
 | Component/unit tests | Render each page/component in isolation (with real Router + CartProvider) and assert on user-visible behavior | Vitest + React Testing Library |
+| End-to-end tests | Drive the real running app in a real Chromium browser through complete user flows | Playwright (`npm run test:e2e`) |
 | Build verification | Run production build and confirm it completes without errors | `npm run build` (Vite) |
 | Manual smoke test | Run dev server, click through all 3 pages and core flows | `npm run dev` + browser |
 
@@ -55,7 +56,8 @@ exercise the same code paths a real user would.
 
 ## 6. Exit Criteria
 
-- 100% of automated test cases pass.
+- 100% of automated unit/component test cases pass (`npm run test`).
+- 100% of automated end-to-end test cases pass (`npm run test:e2e`).
 - Production build (`npm run build`) completes with zero errors.
 - Manual smoke test of all 3 pages and core flows (search, filter, add to cart, buy now,
   update quantity, remove, empty states) shows no defects.
@@ -64,8 +66,10 @@ exercise the same code paths a real user would.
 
 - This Test Plan
 - Test Cases document (detailed case-by-case coverage)
-- Test Run Report (actual results of executing the automated suite)
-- Automated test source files, checked into the repo under `src/**/*.test.jsx`
+- Test Run Report (actual results of executing the automated suites)
+- Automated unit/component test source files, checked into the repo under
+  `src/**/*.test.jsx`
+- Automated end-to-end test source files, checked into the repo under `e2e/*.spec.js`
 
 ## 8. Risks / Assumptions
 
