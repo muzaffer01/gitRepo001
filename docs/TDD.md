@@ -35,6 +35,7 @@ Browser
 | Styling | Plain CSS per component | No CSS framework dependency; keeps bundle small |
 | Testing (unit/component) | Vitest + React Testing Library | Fast, Vite-native test runner; RTL encourages testing user-visible behavior |
 | Testing (end-to-end) | Playwright | Runs the app in a real browser (Chromium) via a real dev server, catching integration/routing/rendering issues unit tests can't |
+| Testing (BDD) | Cucumber.js + Playwright (as the browser driver) | Same real-browser coverage as the E2E layer, but specified as Given/When/Then Gherkin scenarios readable by non-engineers; requested explicitly after a discussion of whether the suite was TDD- or BDD-style |
 
 ## 3. Project Structure
 
@@ -61,6 +62,19 @@ e2e/
   product-details.spec.js    Playwright: details view, add-to-cart, buy-now
   cart.spec.js               Playwright: quantity/remove, subtotal, persistence, full journey
 playwright.config.js         Playwright config — auto-starts `npm run dev` as the test target
+bdd/
+  features/
+    product-list.feature      Gherkin: catalog, search, category filter, mobile layout
+    product-details.feature   Gherkin: details view, add-to-cart, buy-now
+    cart.feature               Gherkin: quantity/remove, subtotal, persistence, full journey
+    header.feature             Gherkin: cart badge count
+  step-definitions/           Given/When/Then implementations (Playwright-driven)
+  support/
+    world.js                  Custom Cucumber World (holds page/browser per scenario)
+    hooks.js                  Before/After(All) — dev server + browser lifecycle
+    devServer.js               Starts/reuses the Vite dev server for BDD runs
+    helpers.js                 Product lookup + composite actions (e.g. add-to-cart)
+cucumber.cjs                  Cucumber.js config — points at bdd/features + bdd/support
 ```
 
 ## 4. Data Model
@@ -128,14 +142,17 @@ a `useEffect` on every change, so it survives page reloads within the same brows
 
 ## 8. Testing Strategy
 
-Two automated layers, both required to pass before a change is considered done:
+Three automated layers, all required to pass before a change is considered done:
 
 - **Unit/component (Vitest + React Testing Library, `npm run test`)** — pages tested
   through `MemoryRouter` (+ `Routes` where param/navigation behavior is under test) and
   a real `CartProvider`, so behavior is verified at the component level without mocking
   context. `localStorage` is cleared between tests and seeded directly where a
   pre-populated cart is needed, avoiding brittle multi-step UI setup. Fast (~2s for the
-  whole suite) — the default feedback loop while developing.
+  whole suite) — the default feedback loop while developing. Written test-*after* the
+  implementation, not test-driven in the strict TDD sense — but the suite is often
+  referred to informally as "the TDD tests" in this project's docs to distinguish it
+  from the BDD layer below.
 - **End-to-end (Playwright, `npm run test:e2e`)** — runs the real built app in a real
   Chromium browser against a real (Playwright-managed) `npm run dev` server, covering
   the same core flows from the outside: catalog browsing/search/filter, product details
@@ -143,6 +160,18 @@ Two automated layers, both required to pass before a change is considered done:
   persistence, and full multi-page journeys via header navigation. Catches
   integration/routing/rendering issues that jsdom-based unit tests can't (e.g. actual
   browser navigation, real CSS layout, real localStorage).
+- **BDD (Cucumber.js + Playwright, `npm run test:bdd`)** — the same real-browser
+  coverage philosophy as the E2E layer, but scenarios are written as Given/When/Then
+  Gherkin (`bdd/features/*.feature`) with plain-language step definitions
+  (`bdd/step-definitions/*.js`) rather than imperative test code, making them readable
+  by non-engineers. `bdd/support/hooks.js` reuses an already-running dev server if one
+  exists (checked via a real HTTP request, not just a socket connect — Vite on this
+  machine binds to `::1`, so a check pinned to `127.0.0.1` would miss it) or spawns
+  one; a fresh browser context + page is created per scenario. Deliberately covers the
+  same behaviors as the unit/E2E suites (full parity, not a subset) — see Test Cases
+  for the mapping — including one case (mobile layout, TC-M06/TC-BDD-08) that neither
+  of the other layers had actually verified before; building it surfaced a real bug
+  ([DEF-002](Defect-002-MobileControlsOverflow.md), fixed immediately).
 - See the companion **Test Plan** and **Test Cases** documents for full coverage details.
 
 ## 9. Build & Deployment

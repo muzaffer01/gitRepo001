@@ -1,0 +1,10 @@
+﻿
+> sampleappdesktop001@0.0.0 test:bdd
+> cucumber-js
+
+...........................................................................................................................
+
+2 hooks (2 passed)
+21 scenarios (21 passed)
+121 steps (121 passed)
+0m 7.125s (0m 7.76s executing your code)

@@ -10,6 +10,14 @@ on Windows 11).
 Automated cases are implemented in the corresponding `*.test.jsx` file and executed via
 `npm run test`. Manual cases are executed by hand against `npm run dev`.
 
+**TDD vs. BDD:** the sections below labeled "Automated" (TC-01–TC-16) and "Automated
+(E2E)" (TC-E2E-*) are informally called "the TDD tests" in this project to distinguish
+them from the "BDD Cases" section further down, which covers the **same** behaviors
+using Given/When/Then Gherkin scenarios (Cucumber + Playwright, `npm run test:bdd`).
+Neither suite is strictly test-driven (tests were written after the implementation in
+both cases) — "TDD" here just labels the imperative `describe`/`it`/`test`-style suite
+as opposed to the declarative BDD one, matching how the user referred to them.
+
 ---
 
 ## Product List Page
@@ -83,6 +91,46 @@ server, so they replace the need to re-run those manual cases by hand each time.
 | TC-E2E-14 | Cart persists across reload | Add item, reload page | Item and subtotal still shown after reload | Automated (E2E) | `e2e/cart.spec.js` |
 | TC-E2E-15 | Full journey via header nav | Browse → details → add to cart → click header cart link | Lands on `/cart` with the correct item shown | Automated (E2E) | `e2e/cart.spec.js` |
 
+## BDD Cases (Cucumber + Gherkin, real browser)
+
+Run via `npm run test:bdd`. Written as Given/When/Then scenarios in
+`bdd/features/*.feature`, implemented by step definitions in `bdd/step-definitions/`,
+driven by Playwright against a real Chromium browser. Deliberately covers the same
+behaviors as the "TDD" (TC-01–16) and E2E (TC-E2E-*) cases above — full parity, not a
+subset — per the requirement that all test cases be covered in both styles. The only
+exceptions are TC-M02 (needs mock data edited to a zero-stock product) and TC-M05
+(build verification isn't a UI behavior) — same gaps that exist in the E2E layer.
+
+| ID | Title | Parallels | Feature file |
+|----|-------|-----------|---------------|
+| TC-BDD-01 | Shows the full product catalog | TC-01 / TC-E2E-01 | `product-list.feature` |
+| TC-BDD-02 | Searching filters products by name | TC-02 / TC-E2E-02 | `product-list.feature` |
+| TC-BDD-03 | Filtering by category shows only matching products | TC-03 / TC-E2E-03 | `product-list.feature` |
+| TC-BDD-04 | Empty search shows no products found | TC-04 / TC-E2E-04 | `product-list.feature` |
+| TC-BDD-05 | Product card links to its details page | TC-05 | `product-list.feature` |
+| TC-BDD-06 | Combined search and category filter narrows results | TC-M01 | `product-list.feature` |
+| TC-BDD-07 | Cart badge starts at zero | TC-E2E-05 | `product-list.feature` |
+| TC-BDD-08 | Layout reflows without horizontal overflow on a mobile viewport | TC-M06 | `product-list.feature` |
+| TC-BDD-09 | Viewing a product shows its full details | TC-06 / TC-E2E-06 | `product-details.feature` |
+| TC-BDD-10 | Visiting an unknown product shows a not-found message | TC-07 / TC-E2E-07 | `product-details.feature` |
+| TC-BDD-11 | Adding to cart shows a confirmation message | TC-08 / TC-E2E-08 | `product-details.feature` |
+| TC-BDD-12 | Buying now navigates straight to the cart | TC-09 / TC-E2E-09 | `product-details.feature` |
+| TC-BDD-13 | The selected quantity is respected when buying now | TC-10 / TC-E2E-10 | `product-details.feature` |
+| TC-BDD-14 | An empty cart shows a message to continue shopping | TC-11 / TC-E2E-11 | `cart.feature` |
+| TC-BDD-15 | The cart lists items with the correct subtotal | TC-12 | `cart.feature` |
+| TC-BDD-16 | Updating an item's quantity recalculates totals | TC-13 / TC-E2E-12 | `cart.feature` |
+| TC-BDD-17 | Removing the only item empties the cart | TC-14 / TC-E2E-13 | `cart.feature` |
+| TC-BDD-18 | The cart persists after a page reload | TC-M03 / TC-E2E-14 | `cart.feature` |
+| TC-BDD-19 | A full shopping journey completes via header navigation | TC-M04 / TC-E2E-15 | `cart.feature` |
+| TC-BDD-20 | The cart badge shows zero when the cart is empty | TC-15 | `header.feature` |
+| TC-BDD-21 | The cart badge reflects the total quantity across multiple items | TC-16 | `header.feature` |
+
+**TC-BDD-08 result note:** this scenario initially **failed** on its first run —
+genuinely, not staged — revealing [DEF-002](Defect-002-MobileControlsOverflow.md), a
+real responsive-layout bug that TC-M06 had previously only marked as "not verified."
+It was fixed immediately (see the defect report) and now passes. See Test Run Report
+section 2c for the original failure output.
+
 ## Known-Failing / Defect-Tracking Cases
 
 These cases document a real, currently-unfixed defect (see
@@ -97,8 +145,9 @@ captured failing run.
 
 ---
 
-**Totals:** 16 automated unit/component cases + 15 automated end-to-end cases, all
-passing (all mapped to committed test files), 6 manual/exploratory cases for coverage
-not practical to automate in Phase 1 (primarily visual layout at this point, since E2E
-now covers reload persistence and navigation), 1 known-failing case tracking an open
-defect (DEF-001).
+**Totals:** 16 automated unit/component ("TDD") cases + 15 automated end-to-end cases +
+21 automated BDD (Cucumber/Gherkin) cases, all passing (all mapped to committed test
+files), 6 manual/exploratory cases for coverage not practical to automate (TC-M02 and
+TC-M05 remain the only two not covered by any automated layer), 1 known-failing case
+tracking an open defect (DEF-001), 1 defect found and fixed via the BDD suite
+(DEF-002).

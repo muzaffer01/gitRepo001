@@ -35,6 +35,7 @@ persistence) works correctly.
 |-------|----------|---------|
 | Component/unit tests | Render each page/component in isolation (with real Router + CartProvider) and assert on user-visible behavior | Vitest + React Testing Library |
 | End-to-end tests | Drive the real running app in a real Chromium browser through complete user flows | Playwright (`npm run test:e2e`) |
+| BDD tests | Same real-browser coverage, specified as Given/When/Then Gherkin scenarios | Cucumber.js + Playwright (`npm run test:bdd`) |
 | Build verification | Run production build and confirm it completes without errors | `npm run build` (Vite) |
 | Manual smoke test | Run dev server, click through all 3 pages and core flows | `npm run dev` + browser |
 
@@ -59,6 +60,7 @@ exercise the same code paths a real user would.
 
 - 100% of automated unit/component test cases pass (`npm run test`).
 - 100% of automated end-to-end test cases pass (`npm run test:e2e`).
+- 100% of automated BDD test scenarios pass (`npm run test:bdd`).
 - Production build (`npm run build`) completes with zero errors.
 - Manual smoke test of all 3 pages and core flows (search, filter, add to cart, buy now,
   update quantity, remove, empty states) shows no defects.
@@ -71,6 +73,8 @@ exercise the same code paths a real user would.
 - Automated unit/component test source files, checked into the repo under
   `src/**/*.test.jsx`
 - Automated end-to-end test source files, checked into the repo under `e2e/*.spec.js`
+- Automated BDD feature files and step definitions, checked into the repo under
+  `bdd/features/*.feature` and `bdd/step-definitions/*.js`
 
 ## 8. Risks / Assumptions
 

@@ -35,6 +35,10 @@ Build a web application like Amazon, with three pages for now:
    kept up to date, for future auto-mode recreation
 8. (Added later) Add Playwright for automated end-to-end browser testing, alongside the
    existing Vitest/RTL unit tests
+9. (Added later) Add a separate Cucumber-based BDD test suite (Given/When/Then
+   Gherkin, driven by Playwright), covering the same behaviors as the existing
+   ("TDD"-labeled) unit suite and the E2E suite — full parity, not a subset — after
+   the user asked whether the existing tests were TDD or BDD style
 
 **Target locations (fixed by the user for this project):**
 - Local repo: `C:\Users\muzzu\Desktop\SampleAppDesktop001`
@@ -83,6 +87,18 @@ equivalent values, then substitute throughout.
   stop at "here's what's missing" — install it, then carry the task through build,
   test, local storage, GitHub, and documentation without waiting for step-by-step
   permission once auto mode is in effect. Confirmed by the user as the right approach.
+- **"TDD" vs "BDD" is a real distinction this user cares about.** When asked whether
+  tests were TDD or BDD, give an honest answer: test-after (not test-driven) with
+  describe/it-style naming is neither strictly TDD nor BDD. If asked to add a BDD
+  suite, it means genuine Gherkin (`Given/When/Then` `.feature` files run by
+  Cucumber or similar), not just renaming existing tests. When asked to "ensure all
+  test cases are covered in both," build real parity — map every case in one suite to
+  an equivalent scenario in the other — rather than a token subset.
+- **A newly-built test layer that finds a real bug should get fixed, not just
+  reported.** Contrast with the deliberate `demo-failing-test` workflow (which leaves
+  its defect open on purpose): if a *new, non-staged* test scenario built for genuine
+  coverage fails, treat that as a real defect — fix it, verify all suites are green
+  again, and write it up (status: Fixed) rather than leaving red tests in the repo.
 
 ## 3. Prerequisites / Environment Setup
 
@@ -178,6 +194,34 @@ Add `"test:e2e": "playwright test"` and `"test:e2e:ui": "playwright test --ui"` 
 same way as the unit suite; add an E2E section to the Test Run Report and an
 "End-to-End Cases" table to Test Cases.
 
+**BDD tests (Cucumber + Playwright)** — add when the user explicitly asks for BDD
+coverage (don't assume it's wanted just because E2E exists):
+```powershell
+npm install -D @cucumber/cucumber
+```
+Create `cucumber.cjs` (CommonJS config file even in an ESM project — cucumber-js
+loads it directly) pointing `paths` at `bdd/features/**/*.feature` and `import` at
+`bdd/support/**/*.js` + `bdd/step-definitions/**/*.js`. Under `bdd/support/`: a
+`devServer.js` that reuses an already-running dev server or spawns one (readiness
+check via a real `fetch()` request, not a raw socket pinned to `127.0.0.1` — Vite can
+bind to `::1` and a naive check will miss it); a `world.js` defining a custom
+Cucumber World holding `page`/`browser`; `hooks.js` wiring `BeforeAll`/`AfterAll`
+(browser + dev server lifecycle) and `Before`/`After` (fresh browser context + page
+per scenario, `localStorage` cleared); a `helpers.js` with composite actions (e.g.
+"add product X to cart") built on the app's own data module so product names map to
+real ids rather than being hardcoded twice. Write one `.feature` file per page/flow
+(same names as the E2E specs — `product-list.feature`, `product-details.feature`,
+`cart.feature`, plus any cross-cutting one like `header.feature`) with Given/When/Then
+scenarios, and matching step definitions in `bdd/step-definitions/`. Add
+`"test:bdd": "cucumber-js"` to `package.json` scripts.
+
+If the user asks to ensure full parity between suites, map every existing unit/E2E
+case to an equivalent BDD scenario (a cross-reference table in Test Cases works well)
+rather than writing a token handful. Run it (`npm run test:bdd`), capture output to
+`logs/`, and treat any failure as real unless the scenario is a known intentional
+demo — fix real bugs immediately, then re-run everything (unit, E2E, BDD, build) to
+confirm nothing regressed before writing up results.
+
 ### 4.5 Git init, commit, push
 ```powershell
 Set-Location "<local-repo-path>"
@@ -266,7 +310,7 @@ for detail.
 | GitHub account | muzaffer01 |
 | Drive folder | "Sample001 Project" — `108gl4b5UcMhemqvyYJ9eH_NRdKhSBFfs` |
 | Dev server | `npm run dev` → http://localhost:5173/ |
-| Tech stack | React 19 + Vite, react-router-dom v7, Context + localStorage, Vitest + RTL (unit), Playwright (E2E) |
+| Tech stack | React 19 + Vite, react-router-dom v7, Context + localStorage, Vitest + RTL (unit), Playwright (E2E), Cucumber.js + Playwright (BDD) |
 | Pages | `/` (Product List), `/products/:id` (Product Details), `/cart` (Cart) |
 
 ## 6. Re-run Trigger
@@ -288,6 +332,7 @@ of re-reading this whole document:
 | `check-dev-environment` | Section 3 — verify/install Node, Git, GitHub CLI |
 | `scaffold-react-app` | Sections 4.1–4.3 — scaffold app, structure, unit tests |
 | `add-playwright-e2e` | Section 4.4 (E2E part) — add Playwright browser tests |
+| `add-bdd-cucumber` | Section 4.4 (BDD part) — add a Cucumber/Gherkin BDD suite with full case parity |
 | `verify-app` | Section 4.4 — run tests, build, manual browser smoke test |
 | `publish-to-github` | Section 4.5 — git init/commit/push, GitHub auth handoff |
 | `publish-project-docs` | Section 4.6 — write/sync PRD, TDD, Test Plan, Test Cases, Test Run Report to repo + Drive |
