@@ -63,6 +63,6 @@ project, unless they've already said to skip asking / use the same stack as befo
 - `add-playwright-e2e` — add end-to-end browser tests on top of the unit suite
 - `verify-app` — run the full verification pass (tests, build, manual smoke test)
 - `publish-to-github` — git init/commit/push
-- `publish-project-docs` — write PRD/TDD/Test Plan/Test Cases/Test Run Report
+- `publish-project-docs` — write PRD/TDD/Test Plan/Test Cases (TDD+BDD)/Test Run Report
 
 See `docs/TDD.md` in this repo for a worked example of the resulting architecture.

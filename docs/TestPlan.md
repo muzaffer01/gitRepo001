@@ -68,7 +68,7 @@ exercise the same code paths a real user would.
 ## 7. Test Deliverables
 
 - This Test Plan
-- Test Cases document (detailed case-by-case coverage)
+- Test Cases documents: `TestCases-TDD.md` and `TestCases-BDD.md` (detailed case-by-case coverage, imperative and Gherkin styles)
 - Test Run Report (actual results of executing the automated suites)
 - Automated unit/component test source files, checked into the repo under
   `src/**/*.test.jsx`

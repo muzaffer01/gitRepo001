@@ -56,8 +56,9 @@ honestly first (see Notes below) rather than silently converting anything.
    the E2E suite does.
 6. **Full parity, not a subset.** If asked to ensure all test cases are covered in
    both styles, map every existing unit/E2E case to an equivalent BDD scenario —
-   produce a cross-reference table in Test Cases (BDD ID ↔ existing TC/E2E ID) so
-   gaps are visible. The only legitimate exceptions are cases that aren't real UI
+   write these into their own **`TestCases-BDD.md`** document (never merged into the
+   TDD one), with a cross-reference table (BDD ID ↔ existing TC/E2E ID) so gaps are
+   visible. The only legitimate exceptions are cases that aren't real UI
    behaviors (e.g. a build-verification case) or that require data not present in the
    current catalog.
 7. Add `"test:bdd": "cucumber-js"` to `package.json` scripts. Run it and capture
@@ -72,10 +73,10 @@ honestly first (see Notes below) rather than silently converting anything.
    BDD + build to confirm nothing regressed, and write it up as a normal defect
    report (status: Fixed) alongside the BDD Test Run Report section.
 9. Update documentation (see `publish-project-docs`): TDD's tech stack + testing
-   strategy (three layers now), Test Plan's test levels + exit criteria, a "BDD
-   Cases" table in Test Cases with the parity mapping, and a BDD results section in
-   the Test Run Report (include the pre-fix failure output if a real bug was found,
-   for the record).
+   strategy (three layers now), Test Plan's test levels + exit criteria,
+   `TestCases-BDD.md` with the full scenario list and parity mapping, and a BDD
+   results section in the Test Run Report (include the pre-fix failure output if a
+   real bug was found, for the record).
 
 ## Notes
 
@@ -88,7 +89,7 @@ honestly first (see Notes below) rather than silently converting anything.
   That's a feature of doing this properly, not a problem with the approach.
 
 See `bdd/features/*.feature`, `bdd/step-definitions/*.js`, `bdd/support/*.js`,
-`cucumber.cjs`, and `docs/TestCases.md`'s "BDD Cases" section in this repo for a
-complete worked example (21 scenarios across 4 feature files, full parity with the
-existing 16 unit + 15 E2E cases, and one real defect — DEF-002 — found and fixed
+`cucumber.cjs`, and `docs/TestCases-BDD.md` in this repo for a complete worked example
+(21 scenarios across 4 feature files, full parity with the existing 16 unit + 15 E2E
+cases in `docs/TestCases-TDD.md`, and one real defect — DEF-002 — found and fixed
 while building it).

@@ -163,7 +163,7 @@ None identified in the original Phase 1 sign-off run. Two defects surfaced later
   open — see linked defect report.
 - **Update (Playwright added):** navigation (TC-M04) and reload persistence (TC-M03)
   are now also covered by automated E2E cases (TC-E2E-15 and TC-E2E-14 respectively —
-  see section 2b and `docs/TestCases.md`).
+  see section 2b and `docs/TestCases-TDD.md`).
 - **Update (BDD added):** TC-M06 (responsive layout) is now fully automated
   (TC-BDD-08) instead of relying on manual verification — and doing so caught and
   fixed a real bug (DEF-002). TC-M01, TC-M03, and TC-M04 are also now covered by BDD

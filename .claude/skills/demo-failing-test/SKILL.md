@@ -35,8 +35,8 @@ signal (`npm run test`, `npm run build`) green.
    - A Defect Report: status (Open), severity/priority, repro steps, root cause (cite
      exact file/line), impact, suggested fix, evidence (paths to the failing test and
      captured log).
-   - A "Known-Failing / Defect-Tracking Cases" section in Test Cases, linking the
-     defect.
+   - A "Known-Failing / Defect-Tracking Cases" section in `TestCases-TDD.md` (this is
+     an imperative demo test, not Gherkin), linking the defect.
    - A dedicated Test Run Report for the scenario, showing **FAIL**, with the captured
      log excerpt and an explicit note on why this doesn't affect the main suite/build.
 7. Sync all of the above to git + Drive per `publish-project-docs`. Leave the defect

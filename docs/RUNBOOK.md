@@ -273,15 +273,35 @@ Produce these documents (adapt names/content to the actual project):
    strategy, build/deploy, known limitations
 3. **Test Plan** — objective, scope (in/out), test levels & approach, environment, entry
    / exit criteria, deliverables, risks, schedule
-4. **Test Cases** — one table per page/area, automated cases mapped to their test files
-   (unit/component AND end-to-end), plus manual/exploratory cases for what automation
-   doesn't practically cover
+4. **Test Cases — always two separate documents, never one merged file** (standing rule,
+   confirmed 2026-08-20, applies to every project going forward):
+   - **`TestCases-TDD.md`** — the imperative style: one table per page/area, automated
+     unit/component AND end-to-end cases mapped to their test files, plus
+     manual/exploratory cases for what automation doesn't practically cover
+   - **`TestCases-BDD.md`** — the declarative style: Given/When/Then Gherkin scenarios
+     quoted verbatim from the `.feature` files (not paraphrased), grouped by feature
+     file, with a parallels column mapping each back to its TDD/E2E case ID
+   - Cross-link the two documents to each other. If a project has no BDD suite yet,
+     still name the single doc `TestCases-TDD.md` (not `TestCases.md`) so adding BDD
+     later never requires a rename.
 5. **Test Run Report** — actual results: automated suite output (both unit and E2E),
    build output, manual smoke test results (including anything **not verified**, with
    an honest note why), defects found (or none), coverage gaps/follow-ups, conclusion
 6. **Defect reports** (as needed) — when a real bug is found (e.g. via a deliberate
    failure-demonstration exercise), document status, severity, repro steps, root cause,
-   impact, suggested fix, and evidence (linked failing test + captured log)
+   impact, suggested fix, and evidence (linked failing test + captured log). In the
+   Test Cases doc's failing/known-defect row itself, always link straight to the
+   defect report file, not just in the surrounding prose.
+7. **Requirements Traceability Matrix (RTM)** (added 2026-08-20, this project) — maps
+   every FR/NFR in the PRD forward to the TDD and BDD case(s) that verify it and back
+   to any linked defect, built by actually cross-referencing the PRD against both Test
+   Cases documents (not backfilled from memory), with an honest coverage-gap summary
+   (cases marked ⚠️ Not covered are real gaps, not omissions from this document).
+8. **Defect Summary Report** (added 2026-08-20, this project) — a roll-up register of
+   every defect (ID, title, status, severity, priority, found-via, requirement
+   violated, link to the full report) plus a short detail section per defect and any
+   cross-defect observations; complements the individual Defect reports rather than
+   replacing them.
 
 All documents' "Author" (or "Found by") field must say **Muzaffer**, never "Claude."
 

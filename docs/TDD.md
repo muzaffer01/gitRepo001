@@ -168,11 +168,13 @@ Three automated layers, all required to pass before a change is considered done:
   exists (checked via a real HTTP request, not just a socket connect — Vite on this
   machine binds to `::1`, so a check pinned to `127.0.0.1` would miss it) or spawns
   one; a fresh browser context + page is created per scenario. Deliberately covers the
-  same behaviors as the unit/E2E suites (full parity, not a subset) — see Test Cases
-  for the mapping — including one case (mobile layout, TC-M06/TC-BDD-08) that neither
-  of the other layers had actually verified before; building it surfaced a real bug
+  same behaviors as the unit/E2E suites (full parity, not a subset) — see
+  [Test Cases — TDD](TestCases-TDD.md) and [Test Cases — BDD](TestCases-BDD.md) for the
+  mapping — including one case (mobile layout, TC-M06/TC-BDD-08) that neither of the
+  other layers had actually verified before; building it surfaced a real bug
   ([DEF-002](Defect-002-MobileControlsOverflow.md), fixed immediately).
-- See the companion **Test Plan** and **Test Cases** documents for full coverage details.
+- See the companion **Test Plan** and **Test Cases — TDD / BDD** documents for full
+  coverage details.
 
 ## 9. Build & Deployment
 

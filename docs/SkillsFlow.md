@@ -39,7 +39,7 @@ flowchart LR
 | `add-bdd-cucumber` | Cucumber.js scenarios in `bdd/features/*.feature` | Given/When/Then coverage with full parity to the other suites |
 | `verify-app` | Unit + E2E + BDD suites, production build, manual browser pass | A pass/fail signal — the gate everything downstream trusts |
 | `publish-to-github` | git init/commit, `gh auth login` (human clicks Authorize), push | The repo, live on GitHub |
-| `publish-project-docs` | Writes/updates PRD, TDD, Test Plan, Test Cases, Test Run Report | `docs/*.md`, committed and pushed |
+| `publish-project-docs` | Writes/updates PRD, TDD, Test Plan, Test Cases (TDD + BDD), Test Run Report | `docs/*.md`, committed and pushed |
 | `demo-failing-test` | One real, non-staged failing scenario in an isolated config | A defect report + its own Test Run Report — gate untouched |
 
 ## Reading the bypass path

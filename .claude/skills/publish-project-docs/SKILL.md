@@ -1,6 +1,6 @@
 ---
 name: publish-project-docs
-description: Write or update the standard project documentation set (PRD, TDD, Test Plan, Test Cases, Test Run Report) and keep it in sync in both the git repo (docs/) and a Google Drive folder as native Google Docs. Use when asked to create or update project documentation.
+description: Write or update the standard project documentation set (PRD, TDD, Test Plan, Test Cases — TDD, Test Cases — BDD, Test Run Report) and keep it in sync in both the git repo (docs/) and a Google Drive folder as native Google Docs. Use when asked to create or update project documentation.
 ---
 
 # Publish Project Documentation
@@ -17,9 +17,15 @@ the git repo and Google Drive. The two must never be allowed to drift apart.
    behaviors, testing strategy, build/deploy, known limitations
 3. **Test Plan** — objective, scope (in/out), test levels & approach, environment,
    entry/exit criteria, deliverables, risks, schedule
-4. **Test Cases** — one table per page/area, automated cases mapped to their test
-   files (unit AND end-to-end if present), plus manual/exploratory cases for what
-   automation doesn't practically cover
+4. **Test Cases — always two separate documents, never merged into one file**
+   (standing rule, applies to every project):
+   - **`TestCases-TDD.md`** — one table per page/area, automated unit/component AND
+     end-to-end cases mapped to their test files, plus manual/exploratory cases for
+     what automation doesn't practically cover
+   - **`TestCases-BDD.md`** — Given/When/Then Gherkin scenarios quoted verbatim from
+     the `.feature` files, grouped by feature file, with a parallels column back to
+     the TDD/E2E case IDs. If there is no BDD suite yet, still name the file
+     `TestCases-TDD.md` rather than `TestCases.md`, so adding BDD later needs no rename.
 5. **Test Run Report** — actual results: automated suite output (verbatim), build
    output, manual smoke test results (mark anything **NOT VERIFIED** honestly, with
    why), defects found (or none), coverage gaps/follow-ups, conclusion
@@ -45,7 +51,8 @@ never "Claude" or similar — confirm the correct name once and reuse it.
      Drive folder ID — Google auto-converts plain text/Markdown into a native Doc.
 4. Do this resync for **every** doc whose source content changed, every time — not
    just the one doc that prompted the update. A change to the tech stack (e.g. adding
-   Playwright) touches the TDD, Test Plan, Test Cases, and Test Run Report at once.
+   Playwright) touches the TDD, Test Plan, both Test Cases docs, and Test Run Report
+   at once.
 
 ## Notes / lessons learned
 
@@ -56,5 +63,6 @@ never "Claude" or similar — confirm the correct name once and reuse it.
   "highlight X in documentation," apply it retroactively to every existing doc in
   both locations, not just new ones going forward.
 
-See `docs/PRD.md`, `docs/TDD.md`, `docs/TestPlan.md`, `docs/TestCases.md`, and
-`docs/TestRunReport.md` in this repo for a complete worked example.
+See `docs/PRD.md`, `docs/TDD.md`, `docs/TestPlan.md`, `docs/TestCases-TDD.md`,
+`docs/TestCases-BDD.md`, and `docs/TestRunReport.md` in this repo for a complete
+worked example.

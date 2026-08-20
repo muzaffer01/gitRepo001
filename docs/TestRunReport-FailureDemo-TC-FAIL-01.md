@@ -95,7 +95,7 @@ npm run build  → built in 239ms, 0 errors
 | Captured failure log | `logs/test-run-TC-FAIL-01-2026-08-17.log` |
 | Main-suite confirmation log (unaffected) | `logs/test-run-main-suite-2026-08-17.log` |
 | Defect report | `docs/Defect-001-CartQuantityExceedsStock.md` |
-| Test case entry | `docs/TestCases.md` → "Known-Failing / Defect-Tracking Cases" → TC-FAIL-01 |
+| Test case entry | `docs/TestCases-TDD.md` → "Known-Failing / Defect-Tracking Cases" → TC-FAIL-01 |
 
 ## 7. Conclusion
 

@@ -48,7 +48,8 @@ unit suite, isolated so `npm run test` and `npm run build` stay unaffected.
    ```
 8. Update documentation to reflect the new layer (see `publish-project-docs`):
    TDD's tech stack + testing strategy, Test Plan's test levels + exit criteria, an
-   "End-to-End Cases" table in Test Cases, and an E2E section in the Test Run Report.
+   "End-to-End Cases" table in `TestCases-TDD.md` (E2E is imperative, not Gherkin, so
+   it belongs in the TDD doc), and an E2E section in the Test Run Report.
 
 ## Reference
 
