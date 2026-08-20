@@ -12,7 +12,7 @@ section 3 (winget installs, PowerShell PATH-refresh quirk, etc.) are specific to
 Windows Terminal context and should be re-evaluated if this runbook is ever executed
 from a different agent/OS environment.
 
-**Last updated:** 2026-08-17
+**Last updated:** 2026-08-20
 
 ---
 
@@ -256,6 +256,13 @@ git push -u origin main
 Verify with `gh repo view <owner>/<repo> --json name,url,pushedAt` and/or a browser
 screenshot of the repo page.
 
+**Token scope note:** if a push is rejected with `refusing to allow an OAuth App to
+create or update workflow ci.yml without workflow scope`, the existing token is missing
+the `workflow` scope (needed for any commit touching `.github/workflows/*`). Fix with
+`gh auth refresh -h github.com -s workflow` (device-flow code + URL printed to
+background output), hand the code/URL to the user, wait for them to authorize it, then
+retry the push — same one-human-click pattern as the initial login.
+
 ### 4.6 Write and publish documentation
 
 Produce these documents (adapt names/content to the actual project):
@@ -294,6 +301,9 @@ All documents' "Author" (or "Found by") field must say **Muzaffer**, never "Clau
   same-named local file first** — write enriched content to the local `docs/*.md` file
   before or alongside writing it to Drive, never only to Drive, so the two never
   diverge (this was missed once during this project and had to be caught and fixed).
+- `trash_file` may be blocked by the harness's auto-mode safety classifier as a
+  destructive action even when the request came from the user — if so, confirm with
+  the user once (they'll typically say yes), then retry.
 
 ### 4.7 Report back
 Summarize what was built, where it lives (local path, GitHub URL, Drive folder), test
