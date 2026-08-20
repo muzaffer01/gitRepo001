@@ -13,6 +13,8 @@ Each phase of building, testing, and publishing SampleShop is captured as its ow
 Claude Code Skill under `.claude/skills/`. Seven run in sequence; one
 (`demo-failing-test`) branches off and deliberately bypasses the quality gate.
 
+![Skills flow diagram](SkillsFlow-diagram.png)
+
 ```mermaid
 flowchart LR
     A[check-dev-environment] -->|tools ready| B[scaffold-react-app]
@@ -52,7 +54,9 @@ pass/fail gate at all: it runs its scenario in an isolated config (see
 release, then still lands its findings in the same documentation set via the dashed
 path into `publish-project-docs`.
 
-## Interactive version
+## Other versions
 
-The same diagram is also published as a Claude Artifact:
-https://claude.ai/code/artifact/2f55c776-a023-441b-920d-6f83115fe1d2
+- **Interactive Artifact:** https://claude.ai/code/artifact/2f55c776-a023-441b-920d-6f83115fe1d2
+- **Static image:** `docs/SkillsFlow-diagram.png` (embedded above) — also uploaded
+  directly to the Drive folder as an actual image file (not just a Google Doc
+  describing it), since Google Docs doesn't render Mermaid.
