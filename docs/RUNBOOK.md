@@ -41,7 +41,7 @@ Build a web application like Amazon, with three pages for now:
    the user asked whether the existing tests were TDD or BDD style
 
 **Target locations (fixed by the user for this project):**
-- Local repo: `C:\Users\muzzu\Desktop\SampleAppDesktop001`
+- Local repo: `C:\Users\muzzu\Desktop\Muz_AI_Projects_win\SampleAppDesktop001` (moved 2026-08-20 from `C:\Users\muzzu\Desktop\SampleAppDesktop001`, to sit alongside the other projects)
 - GitHub repo: `https://github.com/muzaffer01/gitRepo001`
 - Google Drive folder: `https://drive.google.com/drive/u/1/folders/108gl4b5UcMhemqvyYJ9eH_NRdKhSBFfs`
   ("Sample001 Project", Drive folder ID `108gl4b5UcMhemqvyYJ9eH_NRdKhSBFfs`)
@@ -305,7 +305,7 @@ for detail.
 | Item | Value |
 |---|---|
 | App name | SampleShop |
-| Local path | `C:\Users\muzzu\Desktop\SampleAppDesktop001` |
+| Local path | `C:\Users\muzzu\Desktop\Muz_AI_Projects_win\SampleAppDesktop001` |
 | GitHub repo | https://github.com/muzaffer01/gitRepo001 |
 | GitHub account | muzaffer01 |
 | Drive folder | "Sample001 Project" — `108gl4b5UcMhemqvyYJ9eH_NRdKhSBFfs` |

@@ -49,7 +49,7 @@ exercise the same code paths a real user would.
 - Agent: Claude agent running in Windows Terminal (Claude Code CLI)
 - Node.js: v24.19.0
 - Test runner: Vitest v4 with `jsdom` environment (unit); Playwright with Chromium (E2E)
-- Local repo path: `C:\Users\muzzu\Desktop\SampleAppDesktop001`
+- Local repo path: `C:\Users\muzzu\Desktop\Muz_AI_Projects_win\SampleAppDesktop001`
 
 ## 5. Entry Criteria
 
