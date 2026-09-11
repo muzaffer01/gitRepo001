@@ -12,6 +12,8 @@ A small Amazon-style e-commerce web app built with React + Vite. Includes three 
 
 Product data is local mock data (`src/data/products.js`). Cart state is managed via React Context and persisted to `localStorage`.
 
+Architecture diagrams: `docs/SkillsFlow.md` (the 8 build Skills) and `docs/ArchitectureBlueprint.html` (technical flow + framework dependency stack — open directly in a browser).
+
 ## Getting started
 
 ```bash

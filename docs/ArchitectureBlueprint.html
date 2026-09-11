@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SampleAppDesktop001 — Architecture Blueprint</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #0b1f33;
+    --surface: #102640;
+    --surface-2: #153049;
+    --line: #2c5578;
+    --line-bright: #4a7fa5;
+    --text: #eaf3fb;
+    --muted: #93b4cc;
+    --accent: #5ec8e8;
+    --accent-strong: #8fdcf2;
+    --open: #f2b84b;
+    --open-bg: #3a2a10;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -14px rgba(0,0,0,.6);
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    margin: 0;
+    padding-block: 40px;
+    padding-inline: 20px;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: -1px -1px;
+    background-attachment: local;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    opacity: .82;
+    z-index: -1;
+  }
+  .page { max-width: 900px; margin: 0 auto; position: relative; }
+
+  .eyebrow {
+    font: 600 11px/1 "IBM Plex Mono", monospace;
+    letter-spacing: .14em;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font: 700 clamp(26px, 4vw, 36px)/1.15 "IBM Plex Mono", monospace;
+    margin: 0 0 12px;
+    text-wrap: balance;
+    color: var(--text);
+  }
+  .sub { color: var(--muted); max-width: 68ch; margin: 0 0 20px; font-size: 15px; line-height: 1.6; }
+
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin: 0 0 24px; font: 500 12px "IBM Plex Mono", monospace; color: var(--muted); }
+  .legend-item { display: flex; align-items: center; gap: 7px; }
+  .swatch { width: 13px; height: 13px; border-radius: 3px; flex: none; }
+  .swatch.decided { background: var(--accent); }
+  .swatch.open { background: var(--open); border: 1px dashed var(--open); }
+
+  .companion-note {
+    background: var(--surface-2);
+    border: 1px solid var(--line-bright);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 0 0 28px;
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .companion-note b { color: var(--text); }
+  .companion-note a { color: var(--accent-strong); }
+
+  section.diagram-section {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 24px 24px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+  }
+  .sec-eyebrow {
+    font: 600 11px/1 "IBM Plex Mono", monospace;
+    letter-spacing: .1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  h2 {
+    font: 700 21px/1.2 "IBM Plex Mono", monospace;
+    margin: 0 0 12px;
+    color: var(--text);
+  }
+  .lede { color: var(--muted); font-size: 14.5px; line-height: 1.6; max-width: 70ch; margin: 0 0 20px; }
+
+  figure { margin: 0 0 18px; }
+  .diagram-wrap { overflow-x: auto; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+  svg.blueprint { display: block; width: 100%; height: auto; min-width: 560px; }
+  figcaption { color: var(--muted); font-size: 12.5px; margin-top: 8px; font-family: "IBM Plex Mono", monospace; }
+
+  .bp-box { fill: var(--surface-2); stroke: var(--line-bright); stroke-width: 1.5; }
+  .bp-box.open { fill: var(--open-bg); stroke: var(--open); stroke-dasharray: 5 4; }
+  .bp-box.data { fill: #0e2436; stroke: var(--line); }
+  .bp-text { fill: var(--text); font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+  .bp-text-sm { fill: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 10px; }
+  .bp-label { fill: var(--accent-strong); font-family: "IBM Plex Mono", monospace; font-size: 10.5px; }
+  .bp-label.open { fill: var(--open); }
+  .bp-arrow { stroke: var(--line-bright); stroke-width: 1.5; fill: none; }
+  .bp-arrow.open { stroke: var(--open); stroke-dasharray: 5 4; }
+  .bp-arrow.return { stroke: var(--muted); stroke-width: 1.2; }
+
+  .skill-defs {
+    margin: 0 0 20px;
+    padding: 14px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    column-gap: 16px;
+    row-gap: 11px;
+  }
+  .skill-defs dt { font: 600 12.5px "IBM Plex Mono", monospace; color: var(--accent-strong); }
+  .skill-defs dd { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+  @media (max-width: 560px) {
+    .skill-defs { grid-template-columns: 1fr; row-gap: 4px; }
+    .skill-defs dd { margin-bottom: 8px; }
+  }
+
+  .status-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .status-list li { display: flex; gap: 10px; align-items: baseline; font-size: 13.5px; line-height: 1.55; }
+  .status-list .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; margin-top: 5px; }
+  .status-list .dot.decided { background: var(--accent); }
+  .status-list .dot.open { background: var(--open); }
+  .status-list b { color: var(--text); }
+  .status-list span.muted { color: var(--muted); }
+
+  @media (max-width: 560px) {
+    section.diagram-section { padding: 20px 16px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="eyebrow">SAMPLEAPPDESKTOP001 · ARCHITECTURE</p>
+  <h1>Architecture Blueprint</h1>
+  <p class="sub">Two diagrams for SampleShop's build pipeline: how three test layers converge on one pass/fail gate and split into two publish paths, and what layer depends on what underneath. Everything settled is cyan; anything still open is amber and dashed.</p>
+
+  <div class="legend">
+    <span class="legend-item"><span class="swatch decided"></span> Decided</span>
+    <span class="legend-item"><span class="swatch open"></span> Open / tabled</span>
+  </div>
+
+  <p class="companion-note"><b>Diagram 1 of 3 — Skills pipeline — already exists</b> at <a href="./SkillsFlow.md">docs/SkillsFlow.md</a> (Mermaid flowchart, a static <code>SkillsFlow-diagram.png</code>, and a published interactive Artifact) and covers how the 8 Claude Code Skills chain together, from <code>check-dev-environment</code> through <code>publish-project-docs</code>, with <code>demo-failing-test</code> branching off and bypassing the quality gate. This page picks up from there — it does not repeat that diagram — and adds the two that don't exist yet, so the full three-diagram set spans both files.</p>
+
+  <section class="diagram-section">
+    <p class="sec-eyebrow">Diagram 2 of 3</p>
+    <h2>Technical flow</h2>
+    <p class="lede">Three test layers drive the same app and report into one gate. Everything past that gate forks into two publish paths — except the one deliberate failure demo, which skips the gate on purpose and lands directly in docs.</p>
+    <figure>
+      <div class="diagram-wrap">
+        <svg class="blueprint" viewBox="0 0 900 460" role="img" aria-label="Vitest, Playwright, and Cucumber each exercise the SampleShop app and report their results into the verify-app gate. A passing gate forks into two publish paths: GitHub via git commit, gh auth login, and push; and docs, written to the repo then mirrored to Google Drive by trashing and recreating the file. The demo-failing-test skill bypasses the gate entirely and writes straight into the docs path.">
+          <defs>
+            <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="var(--line-bright)"></path>
+            </marker>
+            <marker id="arrow2o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="var(--open)"></path>
+            </marker>
+          </defs>
+
+          <rect class="bp-box data" x="20" y="20" width="200" height="50" rx="6"></rect>
+          <text class="bp-text" x="120" y="42" text-anchor="middle">SampleShop app</text>
+          <text class="bp-text-sm" x="120" y="58" text-anchor="middle">React + Vite + Router</text>
+
+          <rect class="bp-box" x="300" y="20" width="180" height="50" rx="6"></rect>
+          <text class="bp-text" x="390" y="42" text-anchor="middle">Vitest + RTL</text>
+          <text class="bp-text-sm" x="390" y="58" text-anchor="middle">direct import, no browser</text>
+
+          <rect class="bp-box" x="300" y="86" width="180" height="50" rx="6"></rect>
+          <text class="bp-text" x="390" y="108" text-anchor="middle">Playwright</text>
+          <text class="bp-text-sm" x="390" y="124" text-anchor="middle">real Chromium, e2e/*.spec.js</text>
+
+          <rect class="bp-box" x="300" y="152" width="180" height="50" rx="6"></rect>
+          <text class="bp-text" x="390" y="174" text-anchor="middle">Cucumber</text>
+          <text class="bp-text-sm" x="390" y="190" text-anchor="middle">bdd/features/*.feature</text>
+
+          <line class="bp-arrow" x1="220" y1="45" x2="294" y2="45" marker-end="url(#arrow2)"></line>
+          <line class="bp-arrow" x1="220" y1="45" x2="294" y2="111" marker-end="url(#arrow2)"></line>
+          <line class="bp-arrow" x1="220" y1="45" x2="294" y2="177" marker-end="url(#arrow2)"></line>
+
+          <path class="bp-arrow" d="M 480 111 C 500 130, 500 150, 480 165" marker-end="url(#arrow2)"></path>
+          <text class="bp-label" x="565" y="132" text-anchor="middle">reuses installed Chromium</text>
+          <text class="bp-text-sm" x="565" y="146" text-anchor="middle">(not a separate download)</text>
+
+          <rect class="bp-box" x="560" y="86" width="200" height="116" rx="6"></rect>
+          <text class="bp-text" x="660" y="146" text-anchor="middle">verify-app gate</text>
+          <text class="bp-text-sm" x="660" y="164" text-anchor="middle">unit + e2e + bdd + build</text>
+          <text class="bp-text-sm" x="660" y="178" text-anchor="middle">+ manual browser pass</text>
+
+          <line class="bp-arrow" x1="480" y1="45" x2="600" y2="90" marker-end="url(#arrow2)"></line>
+          <line class="bp-arrow" x1="480" y1="111" x2="556" y2="120" marker-end="url(#arrow2)"></line>
+          <line class="bp-arrow" x1="480" y1="177" x2="556" y2="168" marker-end="url(#arrow2)"></line>
+
+          <line class="bp-arrow" x1="660" y1="202" x2="660" y2="240" marker-end="url(#arrow2)"></line>
+          <text class="bp-label" x="678" y="224">all green</text>
+
+          <rect class="bp-box" x="480" y="248" width="200" height="56" rx="6"></rect>
+          <text class="bp-text" x="580" y="272" text-anchor="middle">GitHub path</text>
+          <text class="bp-text-sm" x="580" y="288" text-anchor="middle">commit → gh auth login → push</text>
+
+          <rect class="bp-box" x="700" y="248" width="200" height="56" rx="6"></rect>
+          <text class="bp-text" x="800" y="272" text-anchor="middle">Docs path</text>
+          <text class="bp-text-sm" x="800" y="288" text-anchor="middle">docs/*.md → mirror to Drive</text>
+
+          <path class="bp-arrow" d="M 660 244 L 620 248" marker-end="url(#arrow2)"></path>
+          <path class="bp-arrow" d="M 660 244 L 780 248" marker-end="url(#arrow2)"></path>
+
+          <text class="bp-text-sm" x="580" y="322" text-anchor="middle">human clicks "Authorize" —</text>
+          <text class="bp-text-sm" x="580" y="336" text-anchor="middle">bot-detection rejects a scripted click</text>
+
+          <text class="bp-text-sm" x="800" y="322" text-anchor="middle">no "replace content" API —</text>
+          <text class="bp-text-sm" x="800" y="336" text-anchor="middle">trash old Drive doc, create new one</text>
+
+          <rect class="bp-box open" x="20" y="248" width="220" height="56" rx="6"></rect>
+          <text class="bp-text" x="130" y="272" text-anchor="middle">demo-failing-test</text>
+          <text class="bp-text-sm" x="130" y="288" text-anchor="middle">isolated vite.demo.config.js</text>
+          <path class="bp-arrow open" d="M 240 264 C 400 264, 400 280, 476 276" marker-end="url(#arrow2o)"></path>
+          <text class="bp-label open" x="360" y="380" text-anchor="middle">bypasses the gate — writes straight to docs path</text>
+        </svg>
+      </div>
+      <figcaption>Fig. 2 — three test layers converge on one gate; a passing gate forks to GitHub and docs; the failure demo skips the gate entirely.</figcaption>
+    </figure>
+    <dl class="skill-defs">
+      <dt>Vitest + RTL</dt>
+      <dd>Unit/component layer — imports app modules directly and renders them in jsdom, no real browser involved.</dd>
+      <dt>Playwright</dt>
+      <dd>End-to-end layer — installs and drives a real Chromium browser against the running dev server.</dd>
+      <dt>Cucumber</dt>
+      <dd>BDD layer — runs Given/When/Then <code>.feature</code> scenarios, but reuses the Chromium binary Playwright already installed rather than downloading its own. A real dependency, not just build ordering.</dd>
+      <dt>verify-app gate</dt>
+      <dd>The single point all three suites plus the production build and a manual browser pass report into — the signal everything downstream (GitHub, docs) trusts.</dd>
+      <dt>GitHub path</dt>
+      <dd><code>git commit</code>, then <code>gh auth login</code>'s device flow — the human has to personally click the final "Authorize" button, since GitHub's bot-detection rejects a scripted one — then <code>git push</code>.</dd>
+      <dt>Docs path</dt>
+      <dd>Each of the 8 doc types is written to <code>docs/*.md</code> first, then mirrored to Google Drive as a native Google Doc by trashing the stale file and recreating it — there's no in-place "replace content" call.</dd>
+      <dt>demo-failing-test</dt>
+      <dd>Runs one real, non-staged failing scenario in an isolated Vite config so it can't touch the gate, then still lands a defect report in the same docs path as everything else.</dd>
+    </dl>
+    <ul class="status-list">
+      <li><span class="dot decided"></span><span><b>Decided:</b> <span class="muted">all three test layers must pass, plus the production build and a manual browser click-through, before <code>verify-app</code> reports green — no suite is optional.</span></span></li>
+      <li><span class="dot decided"></span><span><b>Decided:</b> <span class="muted">Cucumber deliberately reuses Playwright's Chromium install rather than managing its own — see Fig. 3 for why that makes it a dependency, not a peer.</span></span></li>
+      <li><span class="dot decided"></span><span><b>Decided:</b> <span class="muted">the local <code>docs/*.md</code> file is always written first or alongside the Drive mirror, never Drive-only, so the two can't silently diverge.</span></span></li>
+    </ul>
+  </section>
+
+  <section class="diagram-section">
+    <p class="sec-eyebrow">Diagram 3 of 3</p>
+    <h2>Framework — dependency stack</h2>
+    <p class="lede">What each layer needs under it to run at all. The one non-obvious coupling in this stack — Cucumber leaning on Playwright's already-installed browser instead of bringing its own — sits right where it happens, in the test layer.</p>
+    <figure>
+      <div class="diagram-wrap">
+        <svg class="blueprint" viewBox="0 0 760 380" role="img" aria-label="The app layer (React, Vite, Router, Context and localStorage) sits under a test layer of Vitest, Playwright, and Cucumber, where Cucumber depends on the Chromium binary Playwright installs rather than installing its own; the test layer feeds a publish layer split between GitHub via the gh CLI device flow and Google Drive via a trash-and-recreate document sync.">
+          <defs>
+            <marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="var(--line-bright)"></path>
+            </marker>
+            <marker id="arrow3o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="var(--open)"></path>
+            </marker>
+          </defs>
+
+          <text class="bp-text-sm" x="20" y="14">APP LAYER</text>
+          <rect class="bp-box data" x="20" y="22" width="720" height="46" rx="5"></rect>
+          <text class="bp-text" x="380" y="50" text-anchor="middle">React + Vite + react-router-dom, Context/localStorage cart state, mock data</text>
+
+          <line class="bp-arrow" x1="380" y1="68" x2="380" y2="96" marker-end="url(#arrow3)"></line>
+
+          <text class="bp-text-sm" x="20" y="94">TEST LAYER</text>
+          <rect class="bp-box" x="20" y="102" width="220" height="56" rx="5"></rect>
+          <text class="bp-text" x="130" y="126" text-anchor="middle">Vitest + RTL</text>
+          <text class="bp-text-sm" x="130" y="142" text-anchor="middle">jsdom, no browser</text>
+
+          <rect class="bp-box" x="270" y="102" width="220" height="56" rx="5"></rect>
+          <text class="bp-text" x="380" y="126" text-anchor="middle">Playwright</text>
+          <text class="bp-text-sm" x="380" y="142" text-anchor="middle">installs Chromium</text>
+
+          <rect class="bp-box open" x="520" y="102" width="220" height="56" rx="5"></rect>
+          <text class="bp-text" x="630" y="126" text-anchor="middle">Cucumber</text>
+          <text class="bp-text-sm" x="630" y="142" text-anchor="middle">no browser of its own</text>
+
+          <path class="bp-arrow open" d="M 516 130 L 494 130" marker-end="url(#arrow3o)"></path>
+          <text class="bp-label open" x="505" y="118" text-anchor="middle" style="font-size:9px">reuses</text>
+
+          <line class="bp-arrow" x1="380" y1="158" x2="380" y2="196" marker-end="url(#arrow3)"></line>
+          <text class="bp-label" x="398" y="182">all three report to verify-app</text>
+
+          <text class="bp-text-sm" x="20" y="204">PUBLISH LAYER</text>
+          <rect class="bp-box" x="20" y="212" width="350" height="70" rx="5"></rect>
+          <text class="bp-text" x="195" y="240" text-anchor="middle">GitHub — gh CLI</text>
+          <text class="bp-text-sm" x="195" y="256" text-anchor="middle">device-flow auth, human clicks Authorize</text>
+          <text class="bp-text-sm" x="195" y="270" text-anchor="middle">then git push</text>
+
+          <rect class="bp-box" x="390" y="212" width="350" height="70" rx="5"></rect>
+          <text class="bp-text" x="565" y="240" text-anchor="middle">Google Drive — Drive API</text>
+          <text class="bp-text-sm" x="565" y="256" text-anchor="middle">no in-place update call</text>
+          <text class="bp-text-sm" x="565" y="270" text-anchor="middle">trash stale doc, create replacement</text>
+
+          <text class="bp-text-sm" x="20" y="330" style="font-size:10.5px">Everything above this line needs the local Node/npm/git/gh toolchain on this machine — there is no remote CI in this stack.</text>
+        </svg>
+      </div>
+      <figcaption>Fig. 3 — app → test → publish, with Cucumber's dependency on Playwright's Chromium install called out as the one non-obvious coupling.</figcaption>
+    </figure>
+    <dl class="skill-defs">
+      <dt>App layer</dt>
+      <dd>The actual product under test — no backend, so this layer is entirely client-side state and mock data.</dd>
+      <dt>Test layer</dt>
+      <dd>Three independent suites, except Cucumber, which is not independent: it calls into the same Playwright/Chromium install rather than managing its own browser binary.</dd>
+      <dt>Publish layer</dt>
+      <dd>Two destinations kept in sync by process, not by any shared tooling — GitHub through the <code>gh</code> CLI's device flow, Google Drive through trash-then-recreate, because neither API offers what the other need supports directly.</dd>
+    </dl>
+    <ul class="status-list">
+      <li><span class="dot decided"></span><span><b>Decided:</b> <span class="muted">Cucumber's browser dependency on Playwright is treated as a real coupling, not incidental ordering — removing or reordering the Playwright skill would break the BDD suite.</span></span></li>
+      <li><span class="dot decided"></span><span><b>Decided:</b> <span class="muted">this stack runs entirely on the local machine's toolchain — there is no CI runner or remote build service in the loop.</span></span></li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>
